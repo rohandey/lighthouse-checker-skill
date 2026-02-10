@@ -100,8 +100,10 @@ Comprehensive website auditing tool using Google Lighthouse. Audits pages for Pe
 
 ## Output Structure
 
+Each run creates a timestamped folder:
+
 ```
-lighthouse-reports/
+lighthouse-reports-2024-01-15_14-30-22/
 ├── summary.html      # Interactive dashboard
 ├── pass/             # Pages scoring >= threshold
 │   ├── page1.html

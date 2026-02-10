@@ -257,10 +257,10 @@ Options:
 
 ## Output
 
-Reports are saved to `./lighthouse-reports/` (or custom directory):
+Reports are saved to a timestamped folder (e.g., `./lighthouse-reports-2024-01-15_14-30-22/`):
 
 ```
-lighthouse-reports/
+lighthouse-reports-2024-01-15_14-30-22/
 ├── summary.html      # Dashboard with all results
 ├── pass/             # Pages scoring >= threshold
 │   ├── page1.html
@@ -269,6 +269,8 @@ lighthouse-reports/
     ├── page2.html
     └── page2.score
 ```
+
+Each run creates a new timestamped folder, preserving previous reports for comparison.
 
 Open `summary.html` in a browser to view all reports with scores for each category.
 

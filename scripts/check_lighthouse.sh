@@ -18,7 +18,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Default values
-OUTPUT_DIR="./lighthouse-reports"
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+OUTPUT_DIR="./lighthouse-reports-${TIMESTAMP}"
 MAX_URLS=50
 PASS_THRESHOLD=90  # Score >= 90 is considered pass
 CATEGORIES=""      # Empty means all categories

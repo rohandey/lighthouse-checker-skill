@@ -21,7 +21,7 @@ NC='\033[0m' # No Color
 ORIGINAL_DIR="$(pwd)"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 OUTPUT_DIR="${ORIGINAL_DIR}/lighthouse-reports-${TIMESTAMP}"
-MAX_URLS=50
+MAX_URLS=150
 PASS_THRESHOLD=90  # Score >= 90 is considered pass
 CATEGORIES=""      # Empty means all categories
 
@@ -36,7 +36,7 @@ usage() {
     echo "        Options: performance, accessibility, best-practices, seo"
     echo "        Short: perf, a11y, bp, seo"
     echo "  -o    Output directory for reports (default: ./lighthouse-reports)"
-    echo "  -m    Maximum URLs to check from sitemap (default: 50)"
+    echo "  -m    Maximum URLs to check from sitemap (default: 150)"
     echo "  -p    Pass threshold score 0-100 (default: 90)"
     echo ""
     echo "Examples:"
@@ -293,11 +293,11 @@ EOF
         for report in "$fail_dir"/*.html; do
             local filename=$(basename "$report")
             local score_file="${report%.html}.score"
-            local perf="-" a11y="-" bp="-" seo="-" avg="-"
+            local page_url="-" perf="-" a11y="-" bp="-" seo="-" avg="-"
             if [ -f "$score_file" ]; then
-                IFS='|' read -r perf a11y bp seo avg < "$score_file"
+                IFS='|' read -r page_url perf a11y bp seo avg < "$score_file"
             fi
-            echo "            <li class=\"report-item fail\"><a href=\"fail/$filename\">$filename</a><div class=\"scores\"><span class=\"score perf\">${perf}</span><span class=\"score a11y\">${a11y}</span><span class=\"score bp\">${bp}</span><span class=\"score seo\">${seo}</span><span class=\"score avg fail\">${avg}</span></div></li>" >> "$summary_file"
+            echo "            <li class=\"report-item fail\"><a href=\"fail/$filename\" title=\"$page_url\">$page_url</a><div class=\"scores\"><span class=\"score perf\">${perf}</span><span class=\"score a11y\">${a11y}</span><span class=\"score bp\">${bp}</span><span class=\"score seo\">${seo}</span><span class=\"score avg fail\">${avg}</span></div></li>" >> "$summary_file"
         done
         shopt -u nullglob
     fi
@@ -324,11 +324,11 @@ EOF
         for report in "$pass_dir"/*.html; do
             local filename=$(basename "$report")
             local score_file="${report%.html}.score"
-            local perf="-" a11y="-" bp="-" seo="-" avg="-"
+            local page_url="-" perf="-" a11y="-" bp="-" seo="-" avg="-"
             if [ -f "$score_file" ]; then
-                IFS='|' read -r perf a11y bp seo avg < "$score_file"
+                IFS='|' read -r page_url perf a11y bp seo avg < "$score_file"
             fi
-            echo "            <li class=\"report-item pass\"><a href=\"pass/$filename\">$filename</a><div class=\"scores\"><span class=\"score perf\">${perf}</span><span class=\"score a11y\">${a11y}</span><span class=\"score bp\">${bp}</span><span class=\"score seo\">${seo}</span><span class=\"score avg pass\">${avg}</span></div></li>" >> "$summary_file"
+            echo "            <li class=\"report-item pass\"><a href=\"pass/$filename\" title=\"$page_url\">$page_url</a><div class=\"scores\"><span class=\"score perf\">${perf}</span><span class=\"score a11y\">${a11y}</span><span class=\"score bp\">${bp}</span><span class=\"score seo\">${seo}</span><span class=\"score avg pass\">${avg}</span></div></li>" >> "$summary_file"
         done
         shopt -u nullglob
     fi
@@ -449,7 +449,7 @@ main() {
         if [[ "$avg_score" -ge "$PASS_THRESHOLD" ]]; then
             echo -e "  ${GREEN}Average: $avg_score/100 - PASS${NC}"
             mv "${temp_file}.report.html" "$OUTPUT_DIR/pass/${safe_name}.html" 2>/dev/null || true
-            echo "$scores|$avg_score" > "$OUTPUT_DIR/pass/${safe_name}.score"
+            echo "$url|$scores|$avg_score" > "$OUTPUT_DIR/pass/${safe_name}.score"
             ((pass_count++))
         else
             echo -e "  ${RED}Average: $avg_score/100 - FAIL${NC}"
@@ -458,7 +458,7 @@ main() {
                 echo -e "  ${RED}Issues: ${failed_audits/|/, }${NC}"
             fi
             mv "${temp_file}.report.html" "$OUTPUT_DIR/fail/${safe_name}.html" 2>/dev/null || true
-            echo "$scores|$avg_score" > "$OUTPUT_DIR/fail/${safe_name}.score"
+            echo "$url|$scores|$avg_score" > "$OUTPUT_DIR/fail/${safe_name}.score"
             ((fail_count++))
         fi
 

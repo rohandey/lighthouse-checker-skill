@@ -54,7 +54,7 @@ Add as a tool definition in your LLM configuration:
   "parameters": {
     "url": "URL to audit (required)",
     "categories": "perf, a11y, bp, seo (optional, comma-separated)",
-    "max_urls": "Maximum pages to crawl (optional, default: 50)",
+    "max_urls": "Maximum pages to crawl (optional, default: 150)",
     "threshold": "Pass threshold 0-100 (optional, default: 90)"
   }
 }
@@ -235,7 +235,7 @@ Options:
 
   -o    Output directory (default: ./lighthouse-reports)
 
-  -m    Maximum URLs from sitemap (default: 50)
+  -m    Maximum URLs from sitemap (default: 150)
 
   -p    Pass threshold 0-100 (default: 90)
 ```

@@ -67,7 +67,7 @@ Comprehensive website auditing tool using Google Lighthouse. Audits pages for Pe
 | `-u` | URL to audit (required) | - |
 | `-c` | Categories: `perf`, `a11y`, `bp`, `seo` (comma-separated) | all |
 | `-o` | Output directory for reports | `./lighthouse-reports` |
-| `-m` | Max URLs to check from sitemap | 50 |
+| `-m` | Max URLs to check from sitemap | 150 |
 | `-p` | Pass threshold score (0-100) | 90 |
 
 ### Category Shortcuts

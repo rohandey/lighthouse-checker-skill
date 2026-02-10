@@ -1,121 +1,138 @@
 ---
 name: lighthouse-checker
-description: This skill should be used when checking websites for page speed, performance, accessibility, best practices, and SEO. It applies when users ask to audit a website's performance, check Lighthouse scores, run page speed tests, or analyze site quality. Triggers on requests like "check page speed", "run Lighthouse audit", "check accessibility", "audit this site", or "test website performance".
+description: Run Google Lighthouse audits on websites to check performance, accessibility, best practices, and SEO. Use when users ask to audit websites, check page speed, test accessibility, analyze Core Web Vitals, or generate Lighthouse reports.
+triggers:
+  - check page speed
+  - run lighthouse audit
+  - audit website performance
+  - check accessibility
+  - test website performance
+  - analyze site speed
+  - check SEO score
+  - run performance test
+  - check core web vitals
+  - audit this site
+  - check best practices
+  - generate lighthouse report
+  - website audit
+  - page speed test
+  - a11y check
+  - wcag compliance check
 ---
 
-# Lighthouse Page Speed Checker
+# Lighthouse Website Auditor
 
-## Overview
+Comprehensive website auditing tool using Google Lighthouse. Audits pages for Performance, Accessibility, Best Practices, and SEO.
 
-This skill enables comprehensive website auditing using Google Lighthouse. It crawls websites via sitemap discovery and generates detailed HTML reports for all four Lighthouse categories:
+## Quick Reference
 
-- **Performance** - Page load speed, rendering, and interactivity
-- **Accessibility** - WCAG compliance and usability for all users
-- **Best Practices** - Security, modern web standards, and code quality
-- **SEO** - Search engine optimization and discoverability
-
-## Prerequisites
-
-Ensure Node.js and npm are installed. The skill's script will auto-install Lighthouse if missing.
-
-## Quick Start
-
-**Check an entire website** (crawls sitemap.xml):
+### Check Entire Website (Crawls Sitemap)
 ```bash
 ./scripts/check_lighthouse.sh -u https://example.com
 ```
 
-**Check a single page**:
+### Check Single Page
 ```bash
 ./scripts/check_lighthouse.sh -u https://example.com/about
 ```
 
-The script automatically detects:
-- **Domain URL** (e.g., `https://example.com`) → Crawls sitemap.xml for all pages
-- **Specific URL** (e.g., `https://example.com/about`) → Checks only that page
+### Check Specific Categories
+```bash
+# Accessibility only
+./scripts/check_lighthouse.sh -u https://example.com -c a11y
 
-## Usage Options
+# Performance only
+./scripts/check_lighthouse.sh -u https://example.com -c perf
+
+# SEO only
+./scripts/check_lighthouse.sh -u https://example.com -c seo
+
+# Best practices only
+./scripts/check_lighthouse.sh -u https://example.com -c bp
+
+# Multiple categories
+./scripts/check_lighthouse.sh -u https://example.com -c perf,a11y
+```
+
+## Full Syntax
 
 ```bash
 ./scripts/check_lighthouse.sh -u <url> [-c <categories>] [-o <output_dir>] [-m <max_urls>] [-p <pass_threshold>]
-
-Options:
-  -u    URL to check (required)
-        - Domain → crawls sitemap.xml
-        - Specific page → checks only that URL
-  -c    Categories to check (comma-separated, default: all)
-        - performance (or perf)
-        - accessibility (or a11y)
-        - best-practices (or bp)
-        - seo
-  -o    Output directory for reports (default: ./lighthouse-reports)
-  -m    Maximum URLs to check from sitemap (default: 50)
-  -p    Pass threshold score 0-100 (default: 90)
 ```
 
-### Examples
+### Options
 
-Check entire site (all categories):
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-u` | URL to audit (required) | - |
+| `-c` | Categories: `perf`, `a11y`, `bp`, `seo` (comma-separated) | all |
+| `-o` | Output directory for reports | `./lighthouse-reports` |
+| `-m` | Max URLs to check from sitemap | 50 |
+| `-p` | Pass threshold score (0-100) | 90 |
+
+### Category Shortcuts
+
+| Full Name | Shorthand | What It Measures |
+|-----------|-----------|------------------|
+| performance | perf | Core Web Vitals, load times, rendering |
+| accessibility | a11y | WCAG compliance, screen reader support |
+| best-practices | bp | Security, modern APIs, console errors |
+| seo | seo | Meta tags, crawlability, mobile-friendliness |
+
+## Examples
+
 ```bash
+# Full site audit with all categories
 ./scripts/check_lighthouse.sh -u https://mysite.com
-```
 
-Check a single page:
-```bash
-./scripts/check_lighthouse.sh -u https://mysite.com/contact
-```
+# Single page, accessibility focus
+./scripts/check_lighthouse.sh -u https://mysite.com/contact -c a11y
 
-**Check accessibility only**:
-```bash
-./scripts/check_lighthouse.sh -u https://mysite.com -c accessibility
-# or shorthand:
-./scripts/check_lighthouse.sh -u https://mysite.com -c a11y
-```
+# Site audit with 80% threshold, max 20 pages
+./scripts/check_lighthouse.sh -u https://mysite.com -m 20 -p 80
 
-**Check performance only**:
-```bash
-./scripts/check_lighthouse.sh -u https://mysite.com -c perf
-```
-
-**Check SEO only**:
-```bash
-./scripts/check_lighthouse.sh -u https://mysite.com -c seo
-```
-
-**Check multiple categories**:
-```bash
+# Performance and SEO only
 ./scripts/check_lighthouse.sh -u https://mysite.com -c perf,seo
-./scripts/check_lighthouse.sh -u https://mysite.com -c a11y,bp
+
+# Custom output directory
+./scripts/check_lighthouse.sh -u https://mysite.com -o ./my-reports
 ```
 
-Crawl site with limit of 10 pages and 80% pass threshold:
-```bash
-./scripts/check_lighthouse.sh -u https://mysite.com -m 10 -p 80
+## Output Structure
+
+```
+lighthouse-reports/
+├── summary.html      # Interactive dashboard
+├── pass/             # Pages scoring >= threshold
+│   ├── page1.html
+│   └── page1.score
+└── fail/             # Pages scoring < threshold
+    ├── page2.html
+    └── page2.score
 ```
 
-## Understanding Reports
+## Score Interpretation
 
-The summary shows scores for each category:
+| Score | Rating | Color |
+|-------|--------|-------|
+| 90-100 | Good | Green |
+| 50-89 | Needs Improvement | Orange |
+| 0-49 | Poor | Red |
 
-| Category | What It Measures |
-|----------|------------------|
-| **Perf** | Core Web Vitals, load times, rendering performance |
-| **A11y** | Accessibility issues, WCAG compliance |
-| **BP** | Security, modern APIs, console errors |
-| **SEO** | Meta tags, crawlability, mobile-friendliness |
+## Workflow
 
-### Pass/Fail Criteria
+1. Run the checker on target URL
+2. Open `summary.html` in browser to view dashboard
+3. Review failed pages first (organized by score)
+4. Click individual reports for detailed recommendations
+5. Fix issues and re-run to verify improvements
 
-Pages are organized into pass/fail folders based on their **average score** across all categories:
-- **Pass**: Average score >= threshold (default 90)
-- **Fail**: Average score < threshold
+## Manual Lighthouse Commands
 
-## Manual Checking
-
-For quick single-page checks:
+For quick single-page checks without the wrapper:
 
 ```bash
-# Full Lighthouse audit
+# Full audit to HTML
 lighthouse https://example.com --output=html --output-path=report.html
 
 # Performance only
@@ -123,25 +140,19 @@ lighthouse https://example.com --only-categories=performance --output=html
 
 # Accessibility only
 lighthouse https://example.com --only-categories=accessibility --output=html
+
+# JSON output for programmatic use
+lighthouse https://example.com --output=json --output-path=report.json
 ```
 
-## Workflow for Full Site Audit
+## Requirements
 
-1. **Run the checker**: Execute the script on the target URL
-2. **Review summary**: Open `summary.html` in browser
-3. **Analyze scores**: Look for patterns in low-scoring categories
-4. **Prioritize fixes**: Focus on lowest scores first
-5. **Re-test**: Run again after fixes to verify improvement
-
-## Score Interpretation
-
-| Score Range | Rating |
-|-------------|--------|
-| 90-100 | Good (green) |
-| 50-89 | Needs Improvement (orange) |
-| 0-49 | Poor (red) |
+- Node.js 14+
+- npm (Lighthouse auto-installed on first run)
+- Python 3 (for score parsing)
+- Chrome/Chromium browser
 
 ## Resources
 
-- `scripts/check_lighthouse.sh` - Main Lighthouse checking script
-- `references/wcag-quick-ref.md` - WCAG guidelines quick reference
+- `scripts/check_lighthouse.sh` - Main script
+- `references/wcag-quick-ref.md` - WCAG accessibility guidelines

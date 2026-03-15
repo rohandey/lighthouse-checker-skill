@@ -24,43 +24,60 @@ triggers:
 
 Comprehensive website auditing tool using Google Lighthouse. Audits pages for Performance, Accessibility, Best Practices, and SEO.
 
+## Setup
+
+Before running any commands, set the `SKILL_DIR` variable to the directory containing this skill:
+
+```bash
+SKILL_DIR="/path/to/lighthouse-checker-skill"
+```
+
+**For Claude:** The skill directory is the parent directory of this SKILL.md file. Reports will be generated in the user's current working directory (not the skill directory).
+
 ## Quick Reference
+
+**Important:** Always run the script from the user's current working directory. The script will generate reports in the current directory.
+
+```bash
+# Get the skill directory (where this SKILL.md lives)
+SKILL_DIR="$(dirname "$(dirname "$0")")"  # When sourced, or use the skill's installed path
+```
 
 ### Check Entire Website (Crawls Sitemap)
 
 ```bash
-./scripts/check_lighthouse.sh -u https://example.com
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com
 ```
 
 ### Check Single Page
 
 ```bash
-./scripts/check_lighthouse.sh -u https://example.com/about
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com/about
 ```
 
 ### Check Specific Categories
 
 ```bash
 # Accessibility only
-./scripts/check_lighthouse.sh -u https://example.com -c a11y
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com -c a11y
 
 # Performance only
-./scripts/check_lighthouse.sh -u https://example.com -c perf
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com -c perf
 
 # SEO only
-./scripts/check_lighthouse.sh -u https://example.com -c seo
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com -c seo
 
 # Best practices only
-./scripts/check_lighthouse.sh -u https://example.com -c bp
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com -c bp
 
 # Multiple categories
-./scripts/check_lighthouse.sh -u https://example.com -c perf,a11y
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://example.com -c perf,a11y
 ```
 
 ## Full Syntax
 
 ```bash
-./scripts/check_lighthouse.sh -u <url> [-c <categories>] [-o <output_dir>] [-m <max_urls>] [-p <pass_threshold>]
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u <url> [-c <categories>] [-o <output_dir>] [-m <max_urls>] [-p <pass_threshold>]
 ```
 
 ### Options
@@ -86,19 +103,19 @@ Comprehensive website auditing tool using Google Lighthouse. Audits pages for Pe
 
 ```bash
 # Full site audit with all categories
-./scripts/check_lighthouse.sh -u https://mysite.com
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://mysite.com
 
 # Single page, accessibility focus
-./scripts/check_lighthouse.sh -u https://mysite.com/contact -c a11y
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://mysite.com/contact -c a11y
 
 # Site audit with 80% threshold, max 20 pages
-./scripts/check_lighthouse.sh -u https://mysite.com -m 20 -p 80
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://mysite.com -m 20 -p 80
 
 # Performance and SEO only
-./scripts/check_lighthouse.sh -u https://mysite.com -c perf,seo
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://mysite.com -c perf,seo
 
 # Custom output directory
-./scripts/check_lighthouse.sh -u https://mysite.com -o ./my-reports
+"$SKILL_DIR/scripts/check_lighthouse.sh" -u https://mysite.com -o ./my-reports
 ```
 
 ## Output Structure
@@ -159,5 +176,5 @@ lighthouse https://example.com --output=json --output-path=report.json
 
 ## Resources
 
-- `scripts/check_lighthouse.sh` - Main script
-- `references/wcag-quick-ref.md` - WCAG accessibility guidelines
+- `$SKILL_DIR/scripts/check_lighthouse.sh` - Main script
+- `$SKILL_DIR/references/wcag-quick-ref.md` - WCAG accessibility guidelines

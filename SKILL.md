@@ -1,5 +1,5 @@
 ---
-name: Lighthouse Checker Skill
+name: lighthouse-checker
 description: Run Google Lighthouse audits on websites to check performance, accessibility, best practices, and SEO. Use when users ask to audit websites, check page speed, test accessibility, analyze Core Web Vitals, or generate Lighthouse reports.
 triggers:
   - check page speed
@@ -27,16 +27,19 @@ Comprehensive website auditing tool using Google Lighthouse. Audits pages for Pe
 ## Quick Reference
 
 ### Check Entire Website (Crawls Sitemap)
+
 ```bash
 ./scripts/check_lighthouse.sh -u https://example.com
 ```
 
 ### Check Single Page
+
 ```bash
 ./scripts/check_lighthouse.sh -u https://example.com/about
 ```
 
 ### Check Specific Categories
+
 ```bash
 # Accessibility only
 ./scripts/check_lighthouse.sh -u https://example.com -c a11y
@@ -62,22 +65,22 @@ Comprehensive website auditing tool using Google Lighthouse. Audits pages for Pe
 
 ### Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-u` | URL to audit (required) | - |
-| `-c` | Categories: `perf`, `a11y`, `bp`, `seo` (comma-separated) | all |
-| `-o` | Output directory for reports | `./lighthouse-reports` |
-| `-m` | Max URLs to check from sitemap | 150 |
-| `-p` | Pass threshold score (0-100) | 90 |
+| Option | Description                                               | Default                |
+| ------ | --------------------------------------------------------- | ---------------------- |
+| `-u`   | URL to audit (required)                                   | -                      |
+| `-c`   | Categories: `perf`, `a11y`, `bp`, `seo` (comma-separated) | all                    |
+| `-o`   | Output directory for reports                              | `./lighthouse-reports` |
+| `-m`   | Max URLs to check from sitemap                            | 150                    |
+| `-p`   | Pass threshold score (0-100)                              | 90                     |
 
 ### Category Shortcuts
 
-| Full Name | Shorthand | What It Measures |
-|-----------|-----------|------------------|
-| performance | perf | Core Web Vitals, load times, rendering |
-| accessibility | a11y | WCAG compliance, screen reader support |
-| best-practices | bp | Security, modern APIs, console errors |
-| seo | seo | Meta tags, crawlability, mobile-friendliness |
+| Full Name      | Shorthand | What It Measures                             |
+| -------------- | --------- | -------------------------------------------- |
+| performance    | perf      | Core Web Vitals, load times, rendering       |
+| accessibility  | a11y      | WCAG compliance, screen reader support       |
+| best-practices | bp        | Security, modern APIs, console errors        |
+| seo            | seo       | Meta tags, crawlability, mobile-friendliness |
 
 ## Examples
 
@@ -115,11 +118,11 @@ lighthouse-reports-2024-01-15_14-30-22/
 
 ## Score Interpretation
 
-| Score | Rating | Color |
-|-------|--------|-------|
-| 90-100 | Good | Green |
-| 50-89 | Needs Improvement | Orange |
-| 0-49 | Poor | Red |
+| Score  | Rating            | Color  |
+| ------ | ----------------- | ------ |
+| 90-100 | Good              | Green  |
+| 50-89  | Needs Improvement | Orange |
+| 0-49   | Poor              | Red    |
 
 ## Workflow
 
